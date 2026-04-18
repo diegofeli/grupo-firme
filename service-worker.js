@@ -1,4 +1,4 @@
-const CACHE_NAME = "firme-cache-v9";
+const CACHE_NAME = "firme-cache-v10";
 
 const urlsToCache = [
   "./",
@@ -32,19 +32,29 @@ self.addEventListener("activate", event => {
 
 // FETCH
 self.addEventListener("fetch", event => {
+
+  if (event.request.method !== "GET") return;
+
+  if (event.request.headers.get("accept").includes("text/html")) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, response.clone());
+            return response;
+          });
+        })
+        .catch(() => {
+          return caches.match(event.request)
+            .then(res => res || caches.match("./index.html"));
+        })
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(response => {
-      if (response) return response;
-
-      return fetch(event.request).then(networkResponse => {
-        return caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, networkResponse.clone());
-          return networkResponse;
-        });
-      }).catch(() => {
-        // opcional: fallback offline
-        return caches.match("./index.html");
-      });
+      return response || fetch(event.request);
     })
   );
 });
