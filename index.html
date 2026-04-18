@@ -15,7 +15,13 @@ header { padding:15px; text-align:center; background:#111; }
 .song { padding:15px; border-bottom:1px solid #222; }
 .screen { display:none; }
 .active { display:block; }
-#lyricsContent { white-space:pre-wrap; font-size:22px; line-height:1.6; }
+#lyricsContent {
+  white-space: pre-wrap;
+  font-size: 22px;
+  line-height: 1.6;
+  padding: 0 15px; /* 👈 esto lo alinea con la lista */
+}
+
 .controls {
   position: sticky;
   top: 0;
@@ -23,14 +29,20 @@ header { padding:15px; text-align:center; background:#111; }
   padding: 10px;
 
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;   /* botones ocupan todo el ancho */
+  gap: 10px;
 }
 
 .font-controls {
   display: flex;
   gap: 10px;
 }
+
+.font-controls button {
+  flex: 1;
+}
+  
 .buttons {
   display: flex;
   justify-content: center;
@@ -70,15 +82,13 @@ button.active {
 <div id="lyricsScreen" class="screen">
 
   <div class="controls">
-    <!-- Botón independiente -->
-    <button class="back" onclick="goBack()">← Volver</button>
+  <button onclick="goBack()">← Volver</button>
 
-    <!-- Grupo lógico -->
-    <div class="font-controls">
-      <button onclick="changeFont(2)">A+</button>
-      <button onclick="changeFont(-2)">A-</button>
-    </div>
+  <div class="font-controls">
+    <button onclick="changeFont(2)">A+</button>
+    <button onclick="changeFont(-2)">A-</button>
   </div>
+</div>
 
   <h2 id="songTitle"></h2>
   <div id="lyricsContent"></div>
