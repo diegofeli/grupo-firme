@@ -87,7 +87,7 @@ function setMode(mode) {
 
   renderList(document.getElementById("search").value);
 }
-  
+
 function normalizar(texto) {
   return texto
     .toLowerCase()
@@ -120,8 +120,6 @@ function renderList(filter = "") {
     div.onclick = () => openSong(song);
     container.appendChild(div);
   });
-
-  setMode("title");
 }
 
 function openSong(song) {
@@ -143,21 +141,15 @@ function switchScreen(id) {
 }
 
 function changeFont(change) {
-  fontSize += change;
+  fontSize = Math.max(14, Math.min(40, fontSize + change));
   document.getElementById("lyricsContent").style.fontSize = fontSize + "px";
 }
 
 document.getElementById("search").addEventListener("input", e => {
   renderList(e.target.value);
 });
+setMode("title");
 
-renderList();
-
-</script>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
-}
 </script>
 </body>
 </html>
