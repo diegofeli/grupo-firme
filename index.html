@@ -103,7 +103,10 @@ function renderList(filter = "") {
 
   let resultados = [];
 
-  if (searchMode === "title") {
+  // 🔴 caso importante: input vacío
+  if (!filtro) {
+    resultados = songs;
+  } else if (searchMode === "title") {
     resultados = songs.filter(s =>
       normalizar(s).includes(filtro)
     );
